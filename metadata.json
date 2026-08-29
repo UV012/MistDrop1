@@ -1,0 +1,7 @@
+{
+  "name": "Mist Drop - B2B Bulk Mineral Water",
+  "description": "Mist Drop by Amrit Enterprises: Patna-based B2B bulk mineral water bottle supplier providing pure, hygienic packaged drinking water and custom branding for enterprise clients.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
+
