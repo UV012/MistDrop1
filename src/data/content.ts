@@ -1,23 +1,43 @@
 import { ProductSKU, Founder, ValueProp, ClientSector } from '../types';
 
-// Free Google Apps Script Web App Endpoint Placeholder
-// Once deployed in Google Sheet (Extensions > Apps Script > Deploy as Web App), paste your URL here:
-export const DEFAULT_GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz_SAMPLE_REPLACE_WITH_YOUR_DEPLOYED_APP_SCRIPT_URL/exec";
+// Google Apps Script Web App Endpoint (configured via VITE_APPS_SCRIPT_URL environment variable)
+export const APPS_SCRIPT_URL: string = import.meta.env.VITE_APPS_SCRIPT_URL || '';
 
 // Business details
 export const COMPANY_INFO = {
   brandName: "Mist Drop",
+  tagline: "Pure Water, Pure Trust",
+  subTitle: "Packaged Drinking Water",
   parentCompany: "Amrit Enterprises",
   regStatus: "MSME Registered & FSSAI Compliant",
-  headquarters: "Industrial Area, Phase II, Patna, Bihar - 800013",
-  shortAddress: "Facility 4, Industrial Sector B, Patna",
-  phone: "+91 94310 28456",
-  phoneRaw: "919431028456",
+  headquarters: "Sangeeta Sadan, Near Devi Asthan, Dhelwan, Post Office Patna, Bihar 800030",
+  shortAddress: "Sangeeta Sadan, Dhelwan, Patna 800030",
+  phone: "+91 93342 46276",
+  phoneRaw: "919334246276",
+  secondaryPhone: "+91 73239 37027",
+  secondaryPhoneRaw: "917323937027",
+  contacts: [
+    {
+      name: "Amit Kumar",
+      phone: "+91 93342 46276",
+      phoneRaw: "919334246276",
+      role: "Sales & Procurement",
+      whatsappUrl: "https://wa.me/919334246276"
+    },
+    {
+      name: "Ritesh Jha",
+      phone: "+91 73239 37027",
+      phoneRaw: "917323937027",
+      role: "Operations & Management",
+      whatsappUrl: "https://wa.me/917323937027"
+    }
+  ],
   email: "procurement@mistdrop.com",
   salesEmail: "sales@amritenterprises.in",
   operatingHours: "Mon - Sat: 8:00 AM - 6:00 PM",
-  whatsappNumber: "919431028456",
-  googleMapsEmbed: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d115132.86144883446!2d85.0451554904561!3d25.608175571617456!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39ed58dce6bed3a9%3A0xe54d9241b712ef93!2sPatna%2C%20Bihar!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin"
+  whatsappNumber: "919334246276",
+  googleMapsEmbed: "https://maps.google.com/maps?q=Sangeeta+Sadan,+Near+Devi+Asthan,+Dhelwan,+Patna,+Bihar+800030&t=&z=15&ie=UTF8&iwloc=&output=embed",
+  googleMapsLink: "https://maps.google.com/?q=Sangeeta+Sadan,+Near+Devi+Asthan,+Dhelwan,+Patna,+Bihar+800030"
 };
 
 // 4 Core B2B Products matching Stitch Export
@@ -117,16 +137,16 @@ export const BULK_INDUSTRIAL_PRODUCTS = [
 // Founders and Leadership Team
 export const FOUNDERS: Founder[] = [
   {
-    name: "Ritesh Kumar Jha",
-    role: "Director & Co-Founder",
-    quote: "Ensuring purity and timely delivery for every single order, no matter the scale.",
-    image: "https://lh3.googleusercontent.com/aida-public/AB6AXuAIefuKJhARq6Wr3xGZZPeBdzhSwq1Ck4UGZ85XO8Lt_GJkxPzJoJKI0jzrnePLMrDfozPOqpwi4y3Fm4aCiWmrb_VYyAN0tWEKvTUH59qZMyjo1zPsge6BKpJsc5AZrgre0vpLnR2qxXQ6ZMuOEw3J9s8-WwXcGSYUp8fvsUs0C1zbET3EUUEXbdiiMR3xwCilbW86DOht4OPg1lUou-jIuzQvLCczmGfx1RVZBiEGZKO33hKOrFclAw"
-  },
-  {
     name: "Amit Kumar",
     role: "Director & Co-Founder",
-    quote: "Building long-term B2B partnerships through uncompromising hygiene standards.",
+    quote: "Building long-term B2B partnerships through uncompromising hygiene standards and dependable Patna supply chains.",
     image: "https://lh3.googleusercontent.com/aida-public/AB6AXuCub-8fwMsZjVG2m5OsNrDIYPrVIXs9jfeXsm3Bv8EQfQoHUUWc9Vma9XOSM6iVuqf6ZaImXscblW--HWqgN1zmUY-HIdsVRRiEtxvKAiILZpyJX-mfAI0yIkFOotDVrPjjXz7wbGUoykLqGQXr4f2z_GKclEn-Yc_CB4wMmGpSfIXBz6gqDQylhpnycIybV8PWImRcFQpwc_4fmK9KoVZdkPykEO2IUFRp01AkM2MZerGWXDr1VXVw5g"
+  },
+  {
+    name: "Ritesh Jha",
+    role: "Director & Co-Founder",
+    quote: "Ensuring laboratory-grade purity and timely delivery for every single order, no matter the scale.",
+    image: "https://lh3.googleusercontent.com/aida-public/AB6AXuAIefuKJhARq6Wr3xGZZPeBdzhSwq1Ck4UGZ85XO8Lt_GJkxPzJoJKI0jzrnePLMrDfozPOqpwi4y3Fm4aCiWmrb_VYyAN0tWEKvTUH59qZMyjo1zPsge6BKpJsc5AZrgre0vpLnR2qxXQ6ZMuOEw3J9s8-WwXcGSYUp8fvsUs0C1zbET3EUUEXbdiiMR3xwCilbW86DOht4OPg1lUou-jIuzQvLCczmGfx1RVZBiEGZKO33hKOrFclAw"
   }
 ];
 

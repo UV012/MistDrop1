@@ -1,18 +1,16 @@
 import React from 'react';
 import { PageId } from '../types';
 import { COMPANY_INFO } from '../data/content';
-import { Droplets, Phone, Mail, MapPin, MessageSquare, ShieldCheck, Database } from 'lucide-react';
+import { Droplets, Phone, Mail, MapPin, MessageSquare, ShieldCheck } from 'lucide-react';
 
 interface FooterProps {
   onNavigate: (page: PageId) => void;
   onOpenPrivacyTerms: (type: 'privacy' | 'terms') => void;
-  onOpenAppsScriptGuide: () => void;
 }
 
 export const Footer: React.FC<FooterProps> = ({
   onNavigate,
   onOpenPrivacyTerms,
-  onOpenAppsScriptGuide,
 }) => {
   const handleNav = (page: PageId) => {
     onNavigate(page);
@@ -32,11 +30,14 @@ export const Footer: React.FC<FooterProps> = ({
               <div className="w-9 h-9 rounded-xl bg-[#dae2ff] flex items-center justify-center text-[#003d9b]">
                 <Droplets className="w-5 h-5 fill-[#003d9b] text-[#003d9b]" />
               </div>
-              <span className="font-bold text-2xl tracking-tight text-[#003d9b]">Mist Drop</span>
+              <div>
+                <span className="font-bold text-2xl tracking-tight text-[#003d9b] block leading-none">Mist Drop</span>
+                <span className="text-[11px] font-semibold text-[#495f84] tracking-wider uppercase block mt-0.5">Pure Water, Pure Trust</span>
+              </div>
             </div>
             
             <p className="text-sm text-[#434654] max-w-sm leading-relaxed">
-              Pure, hygienic, premium bottled water engineered for B2B enterprise procurement, corporate offices, institutions, and custom branded hospitality in Patna and Bihar.
+              Packaged Drinking Water engineered for B2B enterprise procurement, corporate offices, institutions, and custom branded hospitality in Patna and Bihar.
             </p>
 
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white border border-[#c3c6d6]/60 shadow-sm text-xs font-semibold text-[#003d9b]">
@@ -98,9 +99,14 @@ export const Footer: React.FC<FooterProps> = ({
               </li>
               <li className="flex items-center gap-2">
                 <Phone className="w-4 h-4 text-[#003d9b] shrink-0" />
-                <a href={`tel:${COMPANY_INFO.phoneRaw}`} className="hover:text-[#003d9b] hover:underline">
-                  {COMPANY_INFO.phone}
-                </a>
+                <div>
+                  <a href={`tel:${COMPANY_INFO.phoneRaw}`} className="hover:text-[#003d9b] hover:underline block">
+                    Amit Kumar: {COMPANY_INFO.phone}
+                  </a>
+                  <a href={`tel:${COMPANY_INFO.secondaryPhoneRaw}`} className="hover:text-[#003d9b] hover:underline block">
+                    Ritesh Jha: {COMPANY_INFO.secondaryPhone}
+                  </a>
+                </div>
               </li>
               <li className="flex items-center gap-2">
                 <Mail className="w-4 h-4 text-[#003d9b] shrink-0" />
@@ -116,7 +122,7 @@ export const Footer: React.FC<FooterProps> = ({
                   className="inline-flex items-center gap-1.5 text-[#075E54] font-semibold hover:underline"
                 >
                   <MessageSquare className="w-3.5 h-3.5" />
-                  <span>WhatsApp Business: +91 94310 28456</span>
+                  <span>WhatsApp: {COMPANY_INFO.phone}</span>
                 </a>
               </li>
             </ul>
@@ -142,16 +148,6 @@ export const Footer: React.FC<FooterProps> = ({
                   className="hover:text-[#003d9b] hover:underline underline-offset-4 transition-colors"
                 >
                   Terms of Service
-                </button>
-              </li>
-              <li className="pt-2">
-                <button
-                  onClick={onOpenAppsScriptGuide}
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white border border-[#c3c6d6] text-xs font-semibold text-[#003d9b] hover:bg-[#dae2ff] transition-colors"
-                  title="Configure connected Google Sheet for free"
-                >
-                  <Database className="w-3.5 h-3.5" />
-                  <span>Google Sheet Setup (Free)</span>
                 </button>
               </li>
             </ul>

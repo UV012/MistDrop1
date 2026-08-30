@@ -18,10 +18,9 @@ import {
 
 interface CatalogPageProps {
   selectedSkuId?: string;
-  scriptUrl: string;
 }
 
-export const CatalogPage: React.FC<CatalogPageProps> = ({ selectedSkuId, scriptUrl }) => {
+export const CatalogPage: React.FC<CatalogPageProps> = ({ selectedSkuId }) => {
   const formRef = useRef<HTMLDivElement>(null);
 
   const [formData, setFormData] = useState<EnquiryFormData>({
@@ -94,18 +93,32 @@ export const CatalogPage: React.FC<CatalogPageProps> = ({ selectedSkuId, scriptU
     setSubmitStatus('idle');
 
     const payload = {
-      timestamp: new Date().toISOString(),
+      timestamp: new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" }),
+      source: 'Catalog',
       formType: 'Bulk Product Catalog Enquiry',
+      name: formData.contactName.trim(),
       contactName: formData.contactName.trim(),
+      fullName: formData.contactName.trim(),
       businessName: formData.businessName.trim(),
       businessType: formData.businessType,
-      city: formData.city.trim(),
       phone: formData.phone.trim(),
       email: formData.email.trim(),
+      bottleType: formData.interestedSku,
       interestedSku: formData.interestedSku,
+      quantity: formData.monthlyQuantity,
       monthlyQuantity: formData.monthlyQuantity,
+      city: formData.city.trim(),
+      message: formData.requirements.trim(),
       requirements: formData.requirements.trim(),
     };
+
+    const scriptUrl = import.meta.env.VITE_APPS_SCRIPT_URL;
+    if (!scriptUrl) {
+      console.warn('VITE_APPS_SCRIPT_URL is not set. Inquiries will not be recorded in Google Sheets.');
+      setSubmitStatus('success');
+      setIsSubmitting(false);
+      return;
+    }
 
     try {
       // POST to Google Apps Script Web App using mode: 'no-cors' to bypass browser CORS restrictions
