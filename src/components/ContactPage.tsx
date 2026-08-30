@@ -14,11 +14,7 @@ import {
   ShieldCheck,
 } from 'lucide-react';
 
-interface ContactPageProps {
-  scriptUrl: string;
-}
-
-export const ContactPage: React.FC<ContactPageProps> = ({ scriptUrl }) => {
+export const ContactPage: React.FC = () => {
   const [formData, setFormData] = useState<ContactFormData>({
     fullName: '',
     businessType: 'Corporate Procurement',
@@ -63,18 +59,32 @@ export const ContactPage: React.FC<ContactPageProps> = ({ scriptUrl }) => {
     setSubmitStatus('idle');
 
     const payload = {
-      timestamp: new Date().toISOString(),
+      timestamp: new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" }),
+      source: 'Contact',
       formType: 'Contact Page Inquiry',
+      name: formData.fullName.trim(),
       contactName: formData.fullName.trim(),
+      fullName: formData.fullName.trim(),
       businessName: '',
       businessType: formData.businessType,
-      city: 'Patna / Regional',
       phone: formData.phone.trim(),
       email: formData.email.trim(),
+      bottleType: 'General / Custom Inquiry',
       interestedSku: 'General / Custom Inquiry',
-      monthlyQuantity: '',
+      quantity: 'N/A',
+      monthlyQuantity: 'N/A',
+      city: 'Patna / Bihar',
+      message: formData.message.trim(),
       requirements: formData.message.trim(),
     };
+
+    const scriptUrl = import.meta.env.VITE_APPS_SCRIPT_URL;
+    if (!scriptUrl) {
+      console.warn('VITE_APPS_SCRIPT_URL is not set. Inquiries will not be recorded in Google Sheets.');
+      setSubmitStatus('success');
+      setIsSubmitting(false);
+      return;
+    }
 
     try {
       await fetch(scriptUrl, {
@@ -113,7 +123,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({ scriptUrl }) => {
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-4">
         <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#dae2ff] text-[#001848] text-xs font-bold uppercase tracking-wider shadow-sm">
           <MapPin className="w-4 h-4 text-[#003d9b]" />
-          <span>Patna Industrial Facility & Regional HQ</span>
+          <span>Dhelwan, Patna Facility & Regional HQ</span>
         </div>
 
         <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-[#003d9b]">
@@ -130,44 +140,74 @@ export const ContactPage: React.FC<ContactPageProps> = ({ scriptUrl }) => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           
           {/* Card 1: Call Sales */}
-          <a
+          <div
             id="contact-call-card"
-            href={`tel:${COMPANY_INFO.phoneRaw}`}
-            className="bg-white p-7 rounded-3xl border border-[#c3c6d6]/50 shadow-[0_10px_30px_rgba(0,27,61,0.03)] hover:shadow-lg hover:border-[#003d9b] transition-all transform hover:-translate-y-1 flex flex-col justify-between group"
+            className="bg-white p-7 rounded-3xl border border-[#c3c6d6]/50 shadow-[0_10px_30px_rgba(0,27,61,0.03)] hover:shadow-lg hover:border-[#003d9b] transition-all flex flex-col justify-between"
           >
             <div>
-              <div className="w-12 h-12 rounded-2xl bg-[#dae2ff] flex items-center justify-center text-[#003d9b] mb-4 group-hover:scale-105 transition-transform">
+              <div className="w-12 h-12 rounded-2xl bg-[#dae2ff] flex items-center justify-center text-[#003d9b] mb-4">
                 <Phone className="w-6 h-6" />
               </div>
-              <h3 className="text-xl font-bold text-[#191c1e] mb-1">Call Sales Desk</h3>
-              <p className="text-xs text-[#495f84] mb-3">Direct line for immediate procurement and quotes</p>
-              <p className="text-lg font-bold text-[#003d9b]">{COMPANY_INFO.phone}</p>
+              <h3 className="text-xl font-bold text-[#191c1e] mb-1">Direct Call Desk</h3>
+              <p className="text-xs text-[#495f84] mb-3">Direct lines for instant quotes & dispatch verification</p>
+              <div className="space-y-1.5">
+                <a href={`tel:${COMPANY_INFO.phoneRaw}`} className="block text-base font-bold text-[#003d9b] hover:underline">
+                  Amit Kumar: {COMPANY_INFO.phone}
+                </a>
+                <a href={`tel:${COMPANY_INFO.secondaryPhoneRaw}`} className="block text-base font-bold text-[#003d9b] hover:underline">
+                  Ritesh Jha: {COMPANY_INFO.secondaryPhone}
+                </a>
+              </div>
             </div>
-            <span className="mt-4 inline-flex items-center gap-1 text-xs font-bold text-[#003d9b] group-hover:underline">
-              <span>Call Now</span> &rarr;
-            </span>
-          </a>
+            <div className="mt-4 pt-3 border-t border-[#eceef0] flex items-center justify-between text-xs font-bold text-[#003d9b]">
+              <a href={`tel:${COMPANY_INFO.phoneRaw}`} className="hover:underline flex items-center gap-1">
+                <span>Call Amit</span> &rarr;
+              </a>
+              <a href={`tel:${COMPANY_INFO.secondaryPhoneRaw}`} className="hover:underline flex items-center gap-1">
+                <span>Call Ritesh</span> &rarr;
+              </a>
+            </div>
+          </div>
 
           {/* Card 2: WhatsApp Business */}
-          <a
+          <div
             id="contact-whatsapp-card"
-            href={`https://wa.me/${COMPANY_INFO.whatsappNumber}?text=${encodeURIComponent("Hello Mist Drop, I would like to inquire about bulk water supply in Patna.")}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="bg-white p-7 rounded-3xl border border-[#c3c6d6]/50 shadow-[0_10px_30px_rgba(0,27,61,0.03)] hover:shadow-lg hover:border-[#25D366] transition-all transform hover:-translate-y-1 flex flex-col justify-between group"
+            className="bg-white p-7 rounded-3xl border border-[#c3c6d6]/50 shadow-[0_10px_30px_rgba(0,27,61,0.03)] hover:shadow-lg hover:border-[#25D366] transition-all flex flex-col justify-between"
           >
             <div>
-              <div className="w-12 h-12 rounded-2xl bg-[#25D366]/15 flex items-center justify-center text-[#075E54] mb-4 group-hover:scale-105 transition-transform">
+              <div className="w-12 h-12 rounded-2xl bg-[#25D366]/15 flex items-center justify-center text-[#075E54] mb-4">
                 <MessageSquare className="w-6 h-6" />
               </div>
               <h3 className="text-xl font-bold text-[#191c1e] mb-1">WhatsApp Business</h3>
-              <p className="text-xs text-[#495f84] mb-3">Quick chat, PDF quotation exchange & catalog</p>
-              <p className="text-lg font-bold text-[#075E54]">+91 94310 28456</p>
+              <p className="text-xs text-[#495f84] mb-3">Instant chat, PDF quotation exchange & catalog</p>
+              <div className="space-y-1.5">
+                <a
+                  href={`https://wa.me/${COMPANY_INFO.phoneRaw}?text=${encodeURIComponent("Hello Amit, I would like to inquire about Mist Drop packaged drinking water supply.")}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block text-base font-bold text-[#075E54] hover:underline"
+                >
+                  Amit Kumar: {COMPANY_INFO.phone}
+                </a>
+                <a
+                  href={`https://wa.me/${COMPANY_INFO.secondaryPhoneRaw}?text=${encodeURIComponent("Hello Ritesh, I would like to inquire about Mist Drop packaged drinking water supply.")}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block text-base font-bold text-[#075E54] hover:underline"
+                >
+                  Ritesh Jha: {COMPANY_INFO.secondaryPhone}
+                </a>
+              </div>
             </div>
-            <span className="mt-4 inline-flex items-center gap-1 text-xs font-bold text-[#075E54] group-hover:underline">
-              <span>Open WhatsApp Chat</span> &rarr;
-            </span>
-          </a>
+            <a
+              href={`https://wa.me/${COMPANY_INFO.whatsappNumber}?text=${encodeURIComponent("Hello Mist Drop, I would like to inquire about bulk packaged water supply.")}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-4 pt-3 border-t border-[#eceef0] inline-flex items-center gap-1 text-xs font-bold text-[#075E54] hover:underline"
+            >
+              <span>Open Primary WhatsApp</span> &rarr;
+            </a>
+          </div>
 
           {/* Card 3: Corporate Email */}
           <a
@@ -182,6 +222,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({ scriptUrl }) => {
               <h3 className="text-xl font-bold text-[#191c1e] mb-1">Procurement Email</h3>
               <p className="text-xs text-[#495f84] mb-3">Official vendor registration and RFP submissions</p>
               <p className="text-base font-bold text-[#003d9b] truncate">{COMPANY_INFO.email}</p>
+              <p className="text-xs text-[#495f84] truncate mt-1">{COMPANY_INFO.salesEmail}</p>
             </div>
             <span className="mt-4 inline-flex items-center gap-1 text-xs font-bold text-[#003d9b] group-hover:underline">
               <span>Send Email</span> &rarr;
@@ -381,12 +422,33 @@ export const ContactPage: React.FC<ContactPageProps> = ({ scriptUrl }) => {
               <div>
                 <h3 className="text-xl font-bold text-[#191c1e]">{COMPANY_INFO.parentCompany}</h3>
                 <p className="text-xs font-bold text-[#003d9b] uppercase tracking-wider mt-0.5">
-                  Brand: {COMPANY_INFO.brandName}
+                  Brand: {COMPANY_INFO.brandName} — {COMPANY_INFO.subTitle}
                 </p>
-                <p className="text-sm text-[#434654] mt-2 flex items-start gap-2">
+                <p className="text-xs italic text-[#495f84] mt-0.5">
+                  "{COMPANY_INFO.tagline}"
+                </p>
+                <p className="text-sm text-[#434654] mt-3 flex items-start gap-2">
                   <MapPin className="w-4 h-4 text-[#003d9b] shrink-0 mt-0.5" />
                   <span>{COMPANY_INFO.headquarters}</span>
                 </p>
+              </div>
+
+              {/* Direct Contact Persons */}
+              <div className="pt-3 border-t border-[#c3c6d6]/50 space-y-2">
+                <span className="text-[11px] font-bold uppercase tracking-wider text-[#191c1e] block">
+                  Official Contact Persons:
+                </span>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+                  {COMPANY_INFO.contacts.map((contact) => (
+                    <div key={contact.name} className="bg-white p-2.5 rounded-xl border border-[#c3c6d6]/40">
+                      <p className="font-bold text-[#191c1e]">{contact.name}</p>
+                      <p className="text-[10px] text-[#495f84] mb-1">{contact.role}</p>
+                      <a href={`tel:${contact.phoneRaw}`} className="font-bold text-[#003d9b] hover:underline block">
+                        {contact.phone}
+                      </a>
+                    </div>
+                  ))}
+                </div>
               </div>
 
               <div className="pt-3 border-t border-[#c3c6d6]/50 space-y-2 text-xs text-[#434654]">
@@ -402,15 +464,15 @@ export const ContactPage: React.FC<ContactPageProps> = ({ scriptUrl }) => {
 
             </div>
 
-            {/* Embedded Google Maps (Free, no API key needed for basic embed) */}
+            {/* Embedded Google Maps (Pointing to Sangeeta Sadan, Dhelwan) */}
             <div className="bg-white rounded-3xl border border-[#c3c6d6]/50 overflow-hidden shadow-xs">
               <div className="p-4 border-b border-[#eceef0] flex items-center justify-between bg-white">
                 <span className="text-xs font-bold uppercase tracking-wider text-[#191c1e] flex items-center gap-1.5">
                   <MapPin className="w-4 h-4 text-[#003d9b]" />
-                  <span>Patna Plant Map View</span>
+                  <span>Dhelwan Facility Map View</span>
                 </span>
                 <a
-                  href="https://maps.google.com/?q=Patna+Industrial+Area+Bihar"
+                  href={COMPANY_INFO.googleMapsLink}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-xs font-bold text-[#003d9b] hover:underline inline-flex items-center gap-1"
@@ -422,7 +484,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({ scriptUrl }) => {
 
               <div className="w-full h-64 bg-[#eceef0] relative">
                 <iframe
-                  title="Amrit Enterprises Patna Facility Location"
+                  title="Amrit Enterprises Mist Drop Patna Facility Location"
                   src={COMPANY_INFO.googleMapsEmbed}
                   width="100%"
                   height="100%"

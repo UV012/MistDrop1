@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { PageId } from './types';
-import { DEFAULT_GOOGLE_SCRIPT_URL, COMPANY_INFO } from './data/content';
+import { COMPANY_INFO } from './data/content';
 import { Navbar } from './components/Navbar';
 import { MobileBottomNav } from './components/MobileBottomNav';
 import { Footer } from './components/Footer';
@@ -8,22 +8,12 @@ import { HomePage } from './components/HomePage';
 import { CatalogPage } from './components/CatalogPage';
 import { ContactPage } from './components/ContactPage';
 import { PrivacyTermsModal } from './components/PrivacyTermsModal';
-import { AppsScriptGuideModal } from './components/AppsScriptGuideModal';
-import { MessageSquare, PhoneCall } from 'lucide-react';
+import { MessageSquare } from 'lucide-react';
 
 export function App() {
   const [activePage, setActivePage] = useState<PageId>('home');
   const [selectedSkuId, setSelectedSkuId] = useState<string | undefined>(undefined);
   const [privacyModalType, setPrivacyModalType] = useState<'privacy' | 'terms' | null>(null);
-  const [isAppsScriptGuideOpen, setIsAppsScriptGuideOpen] = useState(false);
-  const [scriptUrl, setScriptUrl] = useState<string>(() => {
-    return localStorage.getItem('mistdrop_google_script_url') || DEFAULT_GOOGLE_SCRIPT_URL;
-  });
-
-  const handleUpdateScriptUrl = (newUrl: string) => {
-    setScriptUrl(newUrl);
-    localStorage.setItem('mistdrop_google_script_url', newUrl);
-  };
 
   const handleNavigate = (page: PageId, skuId?: string) => {
     setActivePage(page);
@@ -46,11 +36,11 @@ export function App() {
         )}
 
         {activePage === 'catalog' && (
-          <CatalogPage selectedSkuId={selectedSkuId} scriptUrl={scriptUrl} />
+          <CatalogPage selectedSkuId={selectedSkuId} />
         )}
 
         {activePage === 'contact' && (
-          <ContactPage scriptUrl={scriptUrl} />
+          <ContactPage />
         )}
       </main>
 
@@ -72,25 +62,16 @@ export function App() {
       {/* Bottom Sticky Navigation for Mobile Devices */}
       <MobileBottomNav activePage={activePage} onNavigate={handleNavigate} />
 
-      {/* Standard Footer with MSME, Legal, and Free Apps Script Link */}
+      {/* Standard Footer */}
       <Footer
         onNavigate={handleNavigate}
         onOpenPrivacyTerms={(type) => setPrivacyModalType(type)}
-        onOpenAppsScriptGuide={() => setIsAppsScriptGuideOpen(true)}
       />
 
       {/* Legal Modal (Privacy Policy & Terms) */}
       <PrivacyTermsModal
         type={privacyModalType}
         onClose={() => setPrivacyModalType(null)}
-      />
-
-      {/* Google Apps Script Free Web App Deployment Guide Modal */}
-      <AppsScriptGuideModal
-        isOpen={isAppsScriptGuideOpen}
-        onClose={() => setIsAppsScriptGuideOpen(false)}
-        scriptUrl={scriptUrl}
-        onUpdateScriptUrl={handleUpdateScriptUrl}
       />
 
     </div>
